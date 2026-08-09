@@ -1,0 +1,65 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    image: migflowers-backend-app
+    container_name: migflowers-app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    environment:
+      - DB_CONNECTION=pgsql
+      - DB_HOST=pgsql
+      - DB_PORT=5432
+      - DB_DATABASE=${DB_DATABASE:-migflowers}
+      - DB_USERNAME=${DB_USERNAME:-migflowers}
+      - DB_PASSWORD=${DB_PASSWORD:-secret}
+    depends_on:
+      pgsql:
+        condition: service_healthy
+    networks:
+      - migflowers
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: migflowers-nginx
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8080}:80"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - migflowers
+
+  pgsql:
+    image: postgres:16-alpine
+    container_name: migflowers-pgsql
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=${DB_DATABASE:-migflowers}
+      - POSTGRES_USER=${DB_USERNAME:-migflowers}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-secret}
+    ports:
+      - "${FORWARD_DB_PORT:-5433}:5432"
+    volumes:
+      - pgsql-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-migflowers} -d ${DB_DATABASE:-migflowers}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - migflowers
+
+networks:
+  migflowers:
+    driver: bridge
+
+volumes:
+  pgsql-data:
+    driver: local
