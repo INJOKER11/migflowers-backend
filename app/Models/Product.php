@@ -8,18 +8,21 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Product extends Model
 {
     protected $fillable = [
-      'name',
-      'slug',
-      'description',
-      'price',
-      'is_active',
-      'stock',
-      'category_id',
-      'image',
+        'name',
+        'slug',
+        'description',
+        'price',
+        'discount_price',
+        'is_active',
+        'stock',
+        'category_id',
+        'image',
     ];
 
     protected $casts = [
-      'is_active' => 'boolean',
+        'is_active' => 'boolean',
+        'price' => 'decimal:2',
+        'discount_price' => 'decimal:2',
     ];
 
     public function category(): BelongsTo
