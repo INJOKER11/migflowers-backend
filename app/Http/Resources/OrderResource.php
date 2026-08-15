@@ -18,6 +18,7 @@ class OrderResource extends JsonResource
             'order_number' => $this->order_number,
             'customer_name' => $this->customer_name,
             'customer_email' => $this->customer_email,
+            'customer_phone' => $request->customer_phone,
             'delivery_address' => $this->delivery_address,
             'delivery_date' => $this->delivery_date->format('Y-m-d'),
             'recipient_name' => $this->recipient_name,
