@@ -10,6 +10,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\DissociateAction;
 use Filament\Actions\DissociateBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
@@ -24,9 +25,20 @@ class ItemsRelationManager extends RelationManager
     {
         return $schema
             ->components([
-                TextInput::make('product')
+                Select::make('product_id')
+                    ->relationship('product', 'name')
                     ->required()
-                    ->maxLength(255),
+                ->preload()
+                ->label('Product'),
+                TextInput::make('quantity')
+                    ->required()
+                    ->numeric()
+                ->default(1)
+                ->minValue(1),
+                TextInput::make('price_at_purchase')
+                    ->required()
+                    ->numeric()
+                    ->prefix('₴'),
             ]);
     }
 
@@ -35,24 +47,37 @@ class ItemsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('product')
             ->columns([
-                TextColumn::make('product')
+                TextColumn::make('product.name')
+                    ->label('Product')
                     ->searchable(),
+                TextColumn::make('quantity')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('price_at_purchase')
+                    ->numeric()
+                    ->sortable()
+                    ->money('₴'),
+                TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
                 CreateAction::make(),
-                AssociateAction::make(),
             ])
             ->recordActions([
                 EditAction::make(),
-                DissociateAction::make(),
                 DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DissociateBulkAction::make(),
                     DeleteBulkAction::make(),
                 ]),
             ]);
