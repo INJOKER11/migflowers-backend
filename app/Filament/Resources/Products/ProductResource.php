@@ -2,10 +2,10 @@
 
 namespace App\Filament\Resources\Products;
 
-use App\Filament\Resources\Products\Pages\CreateProducts;
-use App\Filament\Resources\Products\Pages\EditProducts;
+use App\Filament\Resources\Products\Pages\CreateProduct;
+use App\Filament\Resources\Products\Pages\EditProduct;
 use App\Filament\Resources\Products\Pages\ListProducts;
-use App\Filament\Resources\Products\Schemas\ProductsForm;
+use App\Filament\Resources\Products\Schemas\ProductForm;
 use App\Filament\Resources\Products\Tables\ProductsTable;
 use App\Models\Product;
 use BackedEnum;
@@ -14,17 +14,17 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
-class ProductsResource extends Resource
+class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $recordTitleAttribute = 'Products';
+    protected static ?string $recordTitleAttribute = 'Product';
 
     public static function form(Schema $schema): Schema
     {
-        return ProductsForm::configure($schema);
+        return ProductForm::configure($schema);
     }
 
     public static function table(Table $table): Table
@@ -35,6 +35,7 @@ class ProductsResource extends Resource
     public static function getRelations(): array
     {
         return [
+            //
         ];
     }
 
@@ -42,8 +43,8 @@ class ProductsResource extends Resource
     {
         return [
             'index' => ListProducts::route('/'),
-            'create' => CreateProducts::route('/create'),
-            'edit' => EditProducts::route('/{record}/edit'),
+            'create' => CreateProduct::route('/create'),
+            'edit' => EditProduct::route('/{record}/edit'),
         ];
     }
 }

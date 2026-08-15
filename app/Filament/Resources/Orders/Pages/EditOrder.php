@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\Products\Pages;
+namespace App\Filament\Resources\Orders\Pages;
 
-use App\Filament\Resources\Products\ProductsResource;
+use App\Filament\Resources\Orders\OrderResource;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
-class EditProducts extends EditRecord
+class EditOrder extends EditRecord
 {
-    protected static string $resource = ProductsResource::class;
+    protected static string $resource = OrderResource::class;
 
     protected function getHeaderActions(): array
     {

@@ -1,20 +1,39 @@
 <?php
 
-namespace App\Filament\Resources\Categories\Tables;
+namespace App\Filament\Resources\Orders\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class CategoriesTable
+class OrdersTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
+                TextColumn::make('customer_name')
+                    ->searchable(),
+                TextColumn::make('customer_email')
+                    ->searchable(),
+                TextColumn::make('customer_phone')
+                    ->searchable(),
+                TextColumn::make('delivery_date')
+                    ->date()
+                    ->sortable(),
+                TextColumn::make('recipient_name')
+                    ->searchable(),
+                TextColumn::make('status')
+                    ->searchable(),
+                TextColumn::make('total_amount')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('payment_method')
+                    ->searchable(),
+                TextColumn::make('stripe_payment_intent_id')
+                    ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -23,14 +42,6 @@ class CategoriesTable
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('slug')
-                    ->searchable(),
-                TextColumn::make('name')
-                    ->searchable(),
-                TextColumn::make('description')
-                    ->searchable(),
-                IconColumn::make('is_active')
-                    ->boolean(),
             ])
             ->filters([
                 //
