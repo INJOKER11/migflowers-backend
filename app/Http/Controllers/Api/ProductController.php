@@ -17,18 +17,21 @@ class ProductController extends Controller
             'category' => 'sometimes|string|exists:categories,slug',
             'per_page' => 'sometimes|integer|min:1|max:100',
             'page' => 'sometimes|integer|min:1',
+            'max_price' => 'sometimes|numeric|min:0'
         ]);
 
         $categorySlug = $validated['category'] ?? null;
         $ids = $validated['ids'] ?? null;
         $perPage = $validated['per_page'] ?? 20;
+        $maxPrice = $validated['max_price'] ?? null;
 
         $products = Product::with('category')
             ->where('is_active', true)
             ->when($categorySlug, function ($query) use ($categorySlug) {
                 $query->whereHas('category', fn ($q) => $q->where('slug', $categorySlug));
             })
-            ->when($ids, fn ($query) => $query->whereIn('id', $ids));
+            ->when($ids, fn ($query) => $query->whereIn('id', $ids))
+            ->when($maxPrice, fn ($query) => $query->where('price', '<=', $maxPrice));
 
         if($ids) {
             return ProductResource::collection($products->get());
