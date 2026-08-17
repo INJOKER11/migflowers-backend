@@ -38,7 +38,10 @@ class ProductForm
                     ->relationship('category', 'name')
                     ->required(),
                 FileUpload::make('image')
-                    ->image(),
+                    ->image()
+                ->disk('public')
+                ->directory('products')
+                ->maxSize(2048),
             ]);
     }
 }
