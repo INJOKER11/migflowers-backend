@@ -11,14 +11,30 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
+        $validated = $request->validate([
+            'ids' => 'sometimes|array',
+            'ids.*' => 'integer|exists:products,id',
+            'category' => 'sometimes|string|exists:categories,slug',
+            'per_page' => 'sometimes|integer|min:1|max:100',
+            'page' => 'sometimes|integer|min:1',
+        ]);
+
+        $categorySlug = $validated['category'] ?? null;
+        $ids = $validated['ids'] ?? null;
+        $perPage = $validated['per_page'] ?? 20;
+
         $products = Product::with('category')
             ->where('is_active', true)
-            ->when($request->category, function ($query, $categorySlug) {
+            ->when($categorySlug, function ($query) use ($categorySlug) {
                 $query->whereHas('category', fn ($q) => $q->where('slug', $categorySlug));
             })
-        ->paginate(12);
+            ->when($ids, fn ($query) => $query->whereIn('id', $ids));
 
-        return ProductResource::collection($products);
+        if($ids) {
+            return ProductResource::collection($products->get());
+        }
+
+        return ProductResource::collection($products->paginate($perPage));
     }
 
     public function show(string $slug)
