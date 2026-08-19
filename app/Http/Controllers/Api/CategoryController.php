@@ -9,11 +9,10 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-
     public function index(Request $request)
     {
         $validated = $request->validate([
-           'per_page' => 'sometimes|integer|min:1|max:100',
+            'per_page' => 'sometimes|integer|min:1|max:100',
         ]);
         $perPage = $validated['per_page'] ?? 100;
         $categories = Category::where('is_active', true);

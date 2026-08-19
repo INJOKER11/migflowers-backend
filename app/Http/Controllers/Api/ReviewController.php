@@ -6,9 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ReviewResource;
 use App\Models\Review;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 
-class ReviewController  extends Controller
+class ReviewController extends Controller
 {
     public function index(Request $request)
     {
@@ -16,7 +15,7 @@ class ReviewController  extends Controller
             'per_page' => 'sometimes|integer|min:1|max:100',
         ]);
         $perPage = $validated['per_page'] ?? 100;
-        $reviews = Review::paginate($perPage);;
+        $reviews = Review::paginate($perPage);
 
         return ReviewResource::collection($reviews);
     }

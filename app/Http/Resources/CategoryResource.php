@@ -20,7 +20,7 @@ class CategoryResource extends JsonResource
             'slug' => $this->slug,
             'description' => $this->description,
             'is_active' => $this->is_active,
-            'image_url' => $this->image ? asset('storage/' . $this->image) : null,
+            'image_url' => $this->image ? asset('storage/'.$this->image) : null,
         ];
     }
 }
