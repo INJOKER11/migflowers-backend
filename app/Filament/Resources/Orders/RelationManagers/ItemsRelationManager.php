@@ -53,7 +53,7 @@ class ItemsRelationManager extends RelationManager
                 TextColumn::make('price_at_purchase')
                     ->numeric()
                     ->sortable()
-                    ->money('₴'),
+                    ->money('UAH'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
