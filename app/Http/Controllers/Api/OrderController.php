@@ -5,14 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
-use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
-
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -31,11 +29,11 @@ class OrderController extends Controller
 
         $total = 0;
 
-
         foreach ($validated['items'] as $item) {
             $product = Product::findOrFail($item['product_id']);
-            if($product->stock < $item['quantity'] ) {
-                return response()->json(['message' => "Not enough stock for {$product->name}. Only {$product->stock} available."], 422);            }
+            if ($product->stock < $item['quantity']) {
+                return response()->json(['message' => "Not enough stock for {$product->name}. Only {$product->stock} available."], 422);
+            }
             $total += $product->price * $item['quantity'];
         }
 
@@ -53,7 +51,6 @@ class OrderController extends Controller
                 'status' => 'pending',
             ]);
 
-
             foreach ($validated['items'] as $item) {
                 $product = Product::findOrFail($item['product_id']);
 
@@ -67,6 +64,7 @@ class OrderController extends Controller
 
             return $order;
         });
+
         return new OrderResource($order->load('items.product'));
     }
 }

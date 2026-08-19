@@ -2,13 +2,10 @@
 
 namespace App\Filament\Resources\Orders\RelationManagers;
 
-use Filament\Actions\AssociateAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\DissociateAction;
-use Filament\Actions\DissociateBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -28,13 +25,13 @@ class ItemsRelationManager extends RelationManager
                 Select::make('product_id')
                     ->relationship('product', 'name')
                     ->required()
-                ->preload()
-                ->label('Product'),
+                    ->preload()
+                    ->label('Product'),
                 TextInput::make('quantity')
                     ->required()
                     ->numeric()
-                ->default(1)
-                ->minValue(1),
+                    ->default(1)
+                    ->minValue(1),
                 TextInput::make('price_at_purchase')
                     ->required()
                     ->numeric()
