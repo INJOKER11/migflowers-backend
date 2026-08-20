@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ReviewController;
 use Illuminate\Http\Request;
@@ -20,3 +21,6 @@ Route::get('/categories/{slug}', [CategoryController::class, 'show']);
 Route::post('/orders', [OrderController::class, 'store']);
 
 Route::get('/reviews', [ReviewController::class, 'index']);
+
+Route::get('/posts', [PostController::class, 'index']);
+Route::get('/posts/{slug}', [PostController::class, 'show']);
