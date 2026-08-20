@@ -32,7 +32,7 @@ class OrderController extends Controller
         foreach ($validated['items'] as $item) {
             $product = Product::findOrFail($item['product_id']);
             if ($product->stock < $item['quantity']) {
-                return response()->json(['message' => "Not enough stock for {$product->name}. Only {$product->stock} available."], 422);
+                return response()->json(['message' => __('orders.insufficient_stock', ['product' => $product->name, 'stock' => $product->stock])], 422);
             }
             $total += $product->price * $item['quantity'];
         }
