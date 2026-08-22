@@ -22,6 +22,9 @@ class OrdersTable
                     ->searchable(),
                 TextColumn::make('customer_phone')
                     ->searchable(),
+                TextColumn::make('delivery_method')
+                    ->badge()
+                    ->sortable(),
                 TextColumn::make('delivery_date')
                     ->date()
                     ->sortable(),
@@ -29,6 +32,12 @@ class OrdersTable
                     ->searchable(),
                 TextColumn::make('status')
                     ->searchable(),
+                TextColumn::make('delivery_fee')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('card_fee')
+                    ->numeric()
+                    ->sortable(),
                 TextColumn::make('total_amount')
                     ->numeric()
                     ->sortable(),
