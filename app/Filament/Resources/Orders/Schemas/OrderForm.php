@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\Orders\Schemas;
 
+use App\Models\District;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
@@ -21,14 +23,30 @@ class OrderForm
                 TextInput::make('customer_phone')
                     ->tel()
                     ->required(),
-                Textarea::make('delivery_address')
-                    ->required()
-                    ->columnSpanFull(),
-                DatePicker::make('delivery_date')
+                Select::make('delivery_method')
+                    ->options([
+                        'takeaway' => 'Takeaway',
+                        'delivery' => 'Delivery',
+                    ])
                     ->required(),
+                Select::make('district_id')
+                    ->label('District')
+                    ->options(fn () => District::query()->pluck('name', 'id'))
+                    ->searchable(),
+                Textarea::make('delivery_address')
+                    ->columnSpanFull(),
+                DatePicker::make('delivery_date'),
+                TextInput::make('delivery_fee')
+                    ->required()
+                    ->numeric()
+                    ->default(0),
                 TextInput::make('recipient_name'),
                 Textarea::make('card_message')
                     ->columnSpanFull(),
+                TextInput::make('card_fee')
+                    ->required()
+                    ->numeric()
+                    ->default(0),
                 TextInput::make('status')
                     ->required()
                     ->default('pending'),
