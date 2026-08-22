@@ -19,9 +19,10 @@ class OrderController extends Controller
             'customer_phone' => 'required|string',
             'delivery_address' => 'required|string',
             'delivery_date' => 'required|date|after_or_equal:today',
+            'delivery_method' => 'required|in:takeaway,delivery',
             'recipient_name' => 'nullable|string',
             'card_message' => 'nullable|string',
-            'payment_method' => 'required|in:online,cash_on_delivery',
+            'payment_method' => 'required|in:online,on_site,card',
             'items' => 'required|array',
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.quantity' => 'required|integer|min:1',
@@ -31,9 +32,9 @@ class OrderController extends Controller
 
         foreach ($validated['items'] as $item) {
             $product = Product::findOrFail($item['product_id']);
-            if ($product->stock < $item['quantity']) {
-                return response()->json(['message' => __('orders.insufficient_stock', ['product' => $product->name, 'stock' => $product->stock])], 422);
-            }
+//            if ($product->stock < $item['quantity']) {
+//                return response()->json(['message' => __('orders.insufficient_stock', ['product' => $product->name, 'stock' => $product->stock])], 422);
+//            }
             $total += $product->price * $item['quantity'];
         }
 
@@ -59,7 +60,7 @@ class OrderController extends Controller
                     'quantity' => $item['quantity'],
                     'price_at_purchase' => $product->price,
                 ]);
-                $product->decrement('stock', $item['quantity']);
+//                $product->decrement('stock', $item['quantity']);
             }
 
             return $order;
