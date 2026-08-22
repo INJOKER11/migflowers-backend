@@ -43,7 +43,7 @@ class OrdersTable
                     ->sortable(),
                 TextColumn::make('payment_method')
                     ->searchable(),
-                TextColumn::make('stripe_payment_intent_id')
+                TextColumn::make('payment_reference')
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()

@@ -56,7 +56,7 @@ class OrderForm
                 TextInput::make('payment_method')
                     ->required()
                     ->default('online'),
-                TextInput::make('stripe_payment_intent_id'),
+                TextInput::make('payment_reference'),
             ]);
     }
 }

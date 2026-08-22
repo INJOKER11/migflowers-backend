@@ -24,7 +24,7 @@ class Order extends Model
         'status',
         'total_amount',
         'payment_method',
-        'stripe_payment_intent_id',
+        'payment_reference',
     ];
 
     protected $casts = [

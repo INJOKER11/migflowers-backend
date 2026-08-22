@@ -8,10 +8,14 @@ use App\Http\Resources\OrderResource;
 use App\Models\District;
 use App\Models\Order;
 use App\Models\Product;
+use App\Services\TelegramService;
 use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
+    public function __construct(
+        private TelegramService $telegram
+    ){}
     public function store(StoreOrderRequest $request)
     {
         $validated = $request->validated();
@@ -67,6 +71,41 @@ class OrderController extends Controller
             return $order;
         });
 
-        return new OrderResource($order->load('items.product', 'district'));
+        $order->load('items.product', 'district');
+
+        $items = $order->items
+            ->map(fn ($item) => '• ' . e($item->product->name) . " × {$item->quantity}")
+            ->implode("\n");
+
+        $deliveryLines = $order->delivery_method === 'delivery'
+            ? "📅 Дата: <b>{$order->delivery_date->format('d.m.Y')}</b>\n"
+                . '📍 ' . e($order->delivery_address) . "\n"
+                . ($order->district ? '🏘 Район: ' . e($order->district->name) . "\n" : '')
+            : "🏃 Самовивіз\n";
+
+        $paymentMethodLabels = [
+            'online' => 'Оплата онлайн',
+            'on_site' => 'Оплата на місці',
+            'card' => 'Оплата карткою',
+        ];
+        $paymentMethodLabel = $paymentMethodLabels[$order->payment_method] ?? $order->payment_method;
+        $isPaid = filled($order->payment_reference);
+
+        $text = "🌸 <b>Нове замовлення</b>\n\n"
+            . $deliveryLines
+            . '👤 ' . e($order->customer_name) . "\n"
+            . '📞 ' . e($order->customer_phone) . "\n"
+            . '✉️ ' . e($order->customer_email) . "\n\n"
+            . "<b>Товари:</b>\n{$items}\n\n"
+            . ($order->card_fee > 0 ? "🎴 Листівка: +{$order->card_fee} ₴\n" : '')
+            . ($order->card_message ? '💌 Текст листівки: ' . e($order->card_message) . "\n" : '')
+            . ($order->delivery_fee > 0 ? "🚚 Доставка: +{$order->delivery_fee} ₴\n" : '')
+            . "💰 Сума: <b>{$order->total_amount} ₴</b>\n"
+            . '💳 ' . $paymentMethodLabel . "\n"
+            . ($isPaid ? "✅ Оплачено\n" : "❌ Не оплачено\n");
+
+        $this->telegram->sendMessage($text);
+
+        return new OrderResource($order);
     }
 }
