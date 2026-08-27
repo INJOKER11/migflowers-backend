@@ -74,7 +74,7 @@ class OrderController extends Controller
         $order->load('items.product', 'district');
 
         $items = $order->items
-            ->map(fn ($item) => '• ' . e($item->product->name) . " × {$item->quantity}")
+            ->map(fn ($item) => '• ' . e($item->product->name) . " × {$item->quantity}" . " * {$item->price_at_purchase}")
             ->implode("\n");
 
         $deliveryLines = $order->delivery_method === 'delivery'
