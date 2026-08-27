@@ -28,7 +28,9 @@ WORKDIR /var/www/html
 
 COPY docker/php/php.ini /usr/local/etc/php/conf.d/app.ini
 
-RUN addgroup -g 1000 www && adduser -G www -g www -s /bin/sh -D www
+ARG UID=1000
+ARG GID=1000
+RUN addgroup -g ${GID} www && adduser -G www -g www -s /bin/sh -D -u ${UID} www
 
 USER www
 
