@@ -3,6 +3,9 @@ services:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
     image: migflowers-backend-app
     container_name: migflowers-app
     restart: unless-stopped
@@ -60,6 +63,9 @@ services:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
     image: migflowers-backend-app
     container_name: migflowers-queue
     restart: unless-stopped
