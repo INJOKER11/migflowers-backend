@@ -31,9 +31,6 @@ class ProductsTable
                     ->sortable(),
                 IconColumn::make('is_active')
                     ->boolean(),
-                TextColumn::make('stock')
-                    ->numeric()
-                    ->sortable(),
                 TextColumn::make('category.name')
                     ->searchable(),
                 ImageColumn::make('image'),

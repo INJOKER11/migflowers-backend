@@ -30,10 +30,6 @@ class ProductForm
                     ->prefix('₴'),
                 Toggle::make('is_active')
                     ->required(),
-                TextInput::make('stock')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
                 Select::make('category_id')
                     ->relationship('category', 'name')
                     ->required(),
