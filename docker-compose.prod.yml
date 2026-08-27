@@ -57,6 +57,9 @@ services:
       - migflowers
 
   queue:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
     image: migflowers-backend-app
     container_name: migflowers-queue
     restart: unless-stopped
