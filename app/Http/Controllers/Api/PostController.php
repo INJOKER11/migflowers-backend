@@ -19,7 +19,7 @@ class PostController extends Controller
 
     public function show(string $slug)
     {
-        $post = Post::where('slug', $slug)->firstOrFail();
+        $post = Post::whereJsonContainsLocales('slug', [app()->getLocale(), 'uk'], $slug)->firstOrFail();
 
         return new PostResource($post);
     }

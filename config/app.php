@@ -86,6 +86,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Supported Content Locales
+    |--------------------------------------------------------------------------
+    |
+    | The locales that translatable content (products, categories, posts,
+    | districts) may be requested in via the API's "lang" query parameter.
+    |
+    */
+
+    'supported_locales' => array_filter(explode(',', env('APP_SUPPORTED_LOCALES', 'uk,ru'))),
+
+    /*
+    |--------------------------------------------------------------------------
     | Encryption Key
     |--------------------------------------------------------------------------
     |
