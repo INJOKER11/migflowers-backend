@@ -14,7 +14,7 @@ class ProductController extends Controller
         $validated = $request->validate([
             'ids' => 'sometimes|array',
             'ids.*' => 'integer|exists:products,id',
-            'category' => 'sometimes|string|exists:categories,slug',
+            'category' => 'sometimes|string',
             'per_page' => 'sometimes|integer|min:1|max:100',
             'page' => 'sometimes|integer|min:1',
             'max_price' => 'sometimes|numeric|min:0',
@@ -30,7 +30,7 @@ class ProductController extends Controller
         $products = Product::with('category')
             ->where('is_active', true)
             ->when($categorySlug, function ($query) use ($categorySlug) {
-                $query->whereHas('category', fn ($q) => $q->where('slug', $categorySlug));
+                $query->whereHas('category', fn ($q) => $q->whereJsonContainsLocales('slug', [app()->getLocale(), 'uk'], $categorySlug));
             })
             ->when($ids, fn ($query) => $query->whereIn('id', $ids))
             ->when($maxPrice, fn ($query) => $query->where('price', '<=', $maxPrice))
@@ -54,7 +54,7 @@ class ProductController extends Controller
     public function show(string $slug)
     {
         $product = Product::with('category')
-            ->where('slug', $slug)
+            ->whereJsonContainsLocales('slug', [app()->getLocale(), 'uk'], $slug)
             ->where('is_active', true)
             ->firstOrFail();
 

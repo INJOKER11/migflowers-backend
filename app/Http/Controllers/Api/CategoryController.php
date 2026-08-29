@@ -22,7 +22,9 @@ class CategoryController extends Controller
 
     public function show(string $slug)
     {
-        $category = Category::where('slug', $slug)->where('is_active', true)->firstOrFail();
+        $category = Category::whereJsonContainsLocales('slug', [app()->getLocale(), 'uk'], $slug)
+            ->where('is_active', true)
+            ->firstOrFail();
 
         return new CategoryResource($category);
     }

@@ -74,13 +74,13 @@ class OrderController extends Controller
         $order->load('items.product', 'district');
 
         $items = $order->items
-            ->map(fn ($item) => '• ' . e($item->product->name) . " × {$item->quantity}" . " * {$item->price_at_purchase}")
+            ->map(fn ($item) => '• ' . e($item->product->getTranslation('name', 'uk')) . " × {$item->quantity}" . " * {$item->price_at_purchase}")
             ->implode("\n");
 
         $deliveryLines = $order->delivery_method === 'delivery'
             ? "📅 Дата: <b>{$order->delivery_date->format('d.m.Y')}</b>\n"
                 . '📍 ' . e($order->delivery_address) . "\n"
-                . ($order->district ? '🏘 Район: ' . e($order->district->name) . "\n" : '')
+                . ($order->district ? '🏘 Район: ' . e($order->district->getTranslation('name', 'uk')) . "\n" : '')
             : "🏃 Самовивіз\n";
 
         $paymentMethodLabels = [

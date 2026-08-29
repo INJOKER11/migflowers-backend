@@ -5,9 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Translatable\HasTranslations;
 
 class Product extends Model
 {
+
+    use HasTranslations;
+
+    public array $translatable = ['name', 'description', 'slug'];
     protected $fillable = [
         'name',
         'slug',
@@ -15,7 +20,6 @@ class Product extends Model
         'price',
         'discount_price',
         'is_active',
-        'stock',
         'category_id',
         'image',
     ];
