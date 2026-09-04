@@ -40,4 +40,5 @@ return [
         'chat_id' => env('TELEGRAM_CHAT_ID'),
     ],
 
+    'monobank' => ['token' => env('MONOBANK_TOKEN')]
 ];

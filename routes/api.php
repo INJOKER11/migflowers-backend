@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\DistrictController;
+use App\Http\Controllers\Api\MonobankWebhookController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\ProductController;
@@ -20,6 +21,7 @@ Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/categories/{slug}', [CategoryController::class, 'show']);
 
 Route::post('/orders', [OrderController::class, 'store']);
+Route::post('/monobank/webhook', MonobankWebhookController::class)->name('orders.payment.webhook');
 
 Route::get('/reviews', [ReviewController::class, 'index']);
 

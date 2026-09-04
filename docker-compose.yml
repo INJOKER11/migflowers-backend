@@ -19,8 +19,22 @@ services:
     depends_on:
       pgsql:
         condition: service_healthy
+    ports:
+      - "8000:8000"
     networks:
       - migflowers
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    command: http nginx:80
+    environment:
+      - NGROK_AUTHTOKEN=3IpjCubqs9cSpRLRNdSE9Y943EV_3JjzcjMWUreZvVZRexyfa
+    ports:
+      - "4040:4040"
+    networks:
+      - migflowers
+    depends_on:
+      - nginx
 
   nginx:
     image: nginx:stable-alpine

@@ -32,6 +32,7 @@ class OrderResource extends JsonResource
             'status' => $this->status,
             'total_amount' => $this->total_amount,
             'items' => OrderItemResource::collection($this->whenLoaded('items')),
+            'payment_invoice_id' => $this->payment_invoice_id,
             'created_at' => $this->created_at->toIso8601String(),
         ];
     }
