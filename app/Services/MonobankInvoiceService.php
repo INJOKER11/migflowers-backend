@@ -27,7 +27,7 @@ class MonobankInvoiceService
                    'destination' => "Замовлення #{$order->id}",
                ],
                 'redirectUrl' => config('app.frontend_url') . "/checkout/{$order->order_number}",
-                'webHookUrl' => "https://zap-motion-bluish.ngrok-free.dev/api/monobank/webhook",
+                'webHookUrl' => config('app.url') . "/api/monobank/webhook",
                 'validity' => 3600,
             ]);
 
