@@ -30,8 +30,12 @@ class OrderResource extends JsonResource
             'card_fee' => $this->card_fee,
             'payment_method' => $this->payment_method,
             'status' => $this->status,
+            'discount_amount' => $this->discount_amount,
+            'promo_code' => $this->promoCode?->code,
             'total_amount' => $this->total_amount,
             'items' => OrderItemResource::collection($this->whenLoaded('items')),
+            'payment_invoice_id' => $this->payment_invoice_id,
+            'telegram_message_id' => $this->telegram_message_id,
             'created_at' => $this->created_at->toIso8601String(),
         ];
     }

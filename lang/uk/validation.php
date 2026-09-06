@@ -207,6 +207,10 @@ return [
         'items' => 'товари',
         'items.*.product_id' => 'товар',
         'items.*.quantity' => 'кількість',
+        'name' => 'ім\'я',
+        'contact' => 'контакт',
+        'order_number' => 'номер замовлення',
+        'question' => 'питання',
     ],
 
 ];

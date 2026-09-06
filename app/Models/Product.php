@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Translatable\HasTranslations;
 
@@ -20,7 +20,6 @@ class Product extends Model
         'price',
         'discount_price',
         'is_active',
-        'category_id',
         'image',
     ];
 
@@ -30,9 +29,9 @@ class Product extends Model
         'discount_price' => 'decimal:2',
     ];
 
-    public function category(): BelongsTo
+    public function categories(): BelongsToMany
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsToMany(Category::class);
     }
 
     public function orderItems(): HasMany

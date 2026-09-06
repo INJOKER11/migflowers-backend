@@ -14,23 +14,24 @@ class CategoryForm
     {
         return $schema
             ->components([
-                Tabs::make('Translations')
+                Tabs::make('Переклади')
                     ->tabs([
                         Tab::make('Українська')
                             ->schema([
-                                TextInput::make('name.uk')->label('Name')->required(),
-                                TextInput::make('slug.uk')->label('Slug')->required(),
-                                TextInput::make('description.uk')->label('Description'),
+                                TextInput::make('name.uk')->label('Назва')->required(),
+                                TextInput::make('slug.uk')->label('Слаг')->required(),
+                                TextInput::make('description.uk')->label('Опис'),
                             ]),
                         Tab::make('Русский')
                             ->schema([
-                                TextInput::make('name.ru')->label('Name'),
-                                TextInput::make('slug.ru')->label('Slug'),
-                                TextInput::make('description.ru')->label('Description'),
+                                TextInput::make('name.ru')->label('Назва'),
+                                TextInput::make('slug.ru')->label('Слаг'),
+                                TextInput::make('description.ru')->label('Опис'),
                             ]),
                     ])
                     ->columnSpanFull(),
                 Toggle::make('is_active')
+                    ->label('Активний')
                     ->required(),
             ]);
     }

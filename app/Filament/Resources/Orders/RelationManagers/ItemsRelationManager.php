@@ -30,13 +30,15 @@ class ItemsRelationManager extends RelationManager
                     )
                     ->required()
                     ->preload()
-                    ->label('Product'),
+                    ->label('Товар'),
                 TextInput::make('quantity')
+                    ->label('Кількість')
                     ->required()
                     ->numeric()
                     ->default(1)
                     ->minValue(1),
                 TextInput::make('price_at_purchase')
+                    ->label('Ціна на момент покупки')
                     ->required()
                     ->numeric()
                     ->prefix('₴'),
@@ -49,20 +51,24 @@ class ItemsRelationManager extends RelationManager
             ->recordTitleAttribute('product')
             ->columns([
                 TextColumn::make('product.name')
-                    ->label('Product')
+                    ->label('Товар')
                     ->searchable(),
                 TextColumn::make('quantity')
+                    ->label('Кількість')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('price_at_purchase')
+                    ->label('Ціна на момент покупки')
                     ->numeric()
                     ->sortable()
                     ->money('UAH'),
                 TextColumn::make('created_at')
+                    ->label('Дата створення')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label('Дата оновлення')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

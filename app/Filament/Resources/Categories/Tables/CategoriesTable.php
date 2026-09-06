@@ -16,20 +16,26 @@ class CategoriesTable
         return $table
             ->columns([
                 TextColumn::make('created_at')
+                    ->label('Дата створення')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label('Дата оновлення')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('slug')
+                    ->label('Слаг')
                     ->searchable(),
                 TextColumn::make('name')
+                    ->label('Назва')
                     ->searchable(),
                 TextColumn::make('description')
+                    ->label('Опис')
                     ->searchable(),
                 IconColumn::make('is_active')
+                    ->label('Активний')
                     ->boolean(),
             ])
             ->filters([
