@@ -19,12 +19,30 @@ class OrderNotificationService
 
     public function notifyNewOrder(Order $order): void
     {
-        $this->telegram->sendMessage($this->buildMessage($order));
+        $messageId = $this->telegram->sendMessage($this->buildMessage($order));
+
+        if($messageId) {
+            $order->update(['telegram_message_id' => $messageId]);
+        }
+    }
+
+    public function notifyUpdatedOrder(Order $order): void
+    {
+        $text = $this->buildMessage($order);
+
+        if($order->telegram_message_id) {
+            $this->telegram->updateMessage($text, $order->telegram_message_id);
+
+            return;
+        }
+
+        $this->notifyNewOrder($order);
     }
 
     public function buildMessage(Order $order): string
     {
        return "🌸 <b>Нове замовлення</b>\n\n"
+            . '🧾 Замовлення: #' . e($order->order_number) . "\n\n"
             . $this->deliveryLines($order)
             . '👤 ' . e($order->customer_name) . "\n"
             . '📞 ' . e($order->customer_phone) . "\n"
@@ -33,6 +51,7 @@ class OrderNotificationService
             . ($order->card_fee > 0 ? "🎴 Листівка: +{$order->card_fee} ₴\n" : '')
             . ($order->card_message ? '💌 Текст листівки: ' . e($order->card_message) . "\n" : '')
             . ($order->delivery_fee > 0 ? "🚚 Доставка: +{$order->delivery_fee} ₴\n" : '')
+            . ($order->discount_amount > 0 ? "🏷 Знижка: -{$order->discount_amount} ₴\n" : '')
             . "💰 Сума: <b>{$order->total_amount} ₴</b>\n"
             . '💳 ' . $this->paymentMethodLabel($order) . "\n"
             . ($this->isPaid($order) ? "✅ Оплачено\n" : "❌ Не оплачено\n");

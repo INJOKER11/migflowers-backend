@@ -20,25 +20,35 @@ class ProductsTable
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('name')
+                    ->label('Назва')
                     ->searchable(),
                 TextColumn::make('slug')
+                    ->label('Слаг')
                     ->searchable(),
                 TextColumn::make('price')
+                    ->label('Ціна')
                     ->money()
                     ->sortable(),
                 TextColumn::make('discount_price')
+                    ->label('Ціна зі знижкою')
                     ->money()
                     ->sortable(),
                 IconColumn::make('is_active')
+                    ->label('Активний')
                     ->boolean(),
-                TextColumn::make('category.name')
+                TextColumn::make('categories.name')
+                    ->label('Категорії')
+                    ->badge()
                     ->searchable(),
-                ImageColumn::make('image'),
+                ImageColumn::make('image')
+                    ->label('Зображення'),
                 TextColumn::make('created_at')
+                    ->label('Дата створення')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label('Дата оновлення')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

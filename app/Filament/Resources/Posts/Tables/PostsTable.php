@@ -16,17 +16,23 @@ class PostsTable
         return $table
             ->columns([
                 TextColumn::make('title')
+                    ->label('Заголовок')
                     ->searchable(),
                 TextColumn::make('slug')
+                    ->label('Слаг')
                     ->searchable(),
-                ImageColumn::make('image_url'),
+                ImageColumn::make('image_url')
+                    ->label('Зображення'),
                 TextColumn::make('subject')
+                    ->label('Тема')
                     ->searchable(),
                 TextColumn::make('created_at')
+                    ->label('Дата створення')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label('Дата оновлення')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

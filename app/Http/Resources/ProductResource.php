@@ -24,11 +24,11 @@ class ProductResource extends JsonResource
             'stock' => $this->stock,
             'is_available' => $this->is_active,
             'image_url' => $this->image ? asset('storage/'.$this->image) : null,
-            'category' => [
-                'id' => $this->category->id,
-                'name' => $this->category->name,
-                'slug' => $this->category->slug,
-            ],
+            'categories' => $this->categories->map(fn ($category) => [
+                'id' => $category->id,
+                'name' => $category->name,
+                'slug' => $category->slug,
+            ]),
         ];
     }
 }

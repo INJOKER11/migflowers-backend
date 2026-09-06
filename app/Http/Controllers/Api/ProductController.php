@@ -27,10 +27,10 @@ class ProductController extends Controller
         $maxPrice = $validated['max_price'] ?? null;
         $sort = $validated['sort'] ?? null;
 
-        $products = Product::with('category')
+        $products = Product::with('categories')
             ->where('is_active', true)
             ->when($categorySlug, function ($query) use ($categorySlug) {
-                $query->whereHas('category', fn ($q) => $q->whereJsonContainsLocales('slug', [app()->getLocale(), 'uk'], $categorySlug));
+                $query->whereHas('categories', fn ($q) => $q->whereJsonContainsLocales('slug', [app()->getLocale(), 'uk'], $categorySlug));
             })
             ->when($ids, fn ($query) => $query->whereIn('id', $ids))
             ->when($maxPrice, fn ($query) => $query->where('price', '<=', $maxPrice))
@@ -53,7 +53,7 @@ class ProductController extends Controller
 
     public function show(string $slug)
     {
-        $product = Product::with('category')
+        $product = Product::with('categories')
             ->whereJsonContainsLocales('slug', [app()->getLocale(), 'uk'], $slug)
             ->where('is_active', true)
             ->firstOrFail();

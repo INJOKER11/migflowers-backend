@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Resources\OrderResource;
+use App\Http\Resources\OrderStatusResource;
 use App\Models\District;
 use App\Models\Order;
 use App\Models\Product;
@@ -33,5 +34,12 @@ class OrderController extends Controller
 
         return (new OrderResource($order))
             ->additional(['payment_url' => $paymentUrl]);
+    }
+
+    public function getOrderStatus(string $orderNumber)
+    {
+        $order = Order::where('order_number', $orderNumber)->firstOrFail();
+
+        return new OrderStatusResource($order);
     }
 }

@@ -15,25 +15,26 @@ class PostForm
     {
         return $schema
             ->components([
-                Tabs::make('Translations')
+                Tabs::make('Переклади')
                     ->tabs([
                         Tab::make('Українська')
                             ->schema([
-                                TextInput::make('title.uk')->label('Title')->required(),
-                                TextInput::make('slug.uk')->label('Slug')->required(),
-                                Textarea::make('content.uk')->label('Content')->required()->columnSpanFull(),
-                                TextInput::make('subject.uk')->label('Subject')->required(),
+                                TextInput::make('title.uk')->label('Заголовок')->required(),
+                                TextInput::make('slug.uk')->label('Слаг')->required(),
+                                Textarea::make('content.uk')->label('Зміст')->required()->columnSpanFull(),
+                                TextInput::make('subject.uk')->label('Тема')->required(),
                             ]),
                         Tab::make('Русский')
                             ->schema([
-                                TextInput::make('title.ru')->label('Title'),
-                                TextInput::make('slug.ru')->label('Slug'),
-                                Textarea::make('content.ru')->label('Content')->columnSpanFull(),
-                                TextInput::make('subject.ru')->label('Subject'),
+                                TextInput::make('title.ru')->label('Заголовок'),
+                                TextInput::make('slug.ru')->label('Слаг'),
+                                Textarea::make('content.ru')->label('Зміст')->columnSpanFull(),
+                                TextInput::make('subject.ru')->label('Тема'),
                             ]),
                     ])
                     ->columnSpanFull(),
                 FileUpload::make('image_url')
+                    ->label('Зображення')
                     ->image()
                     ->disk('public')
                     ->directory('posts'),

@@ -15,17 +15,22 @@ class DistrictsTable
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label('Назва')
                     ->searchable(),
                 TextColumn::make('price_for_delivery')
+                    ->label('Вартість доставки')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('description')
+                    ->label('Опис')
                     ->searchable(),
                 TextColumn::make('created_at')
+                    ->label('Дата створення')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label('Дата оновлення')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

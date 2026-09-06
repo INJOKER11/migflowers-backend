@@ -13,21 +13,22 @@ class DistrictForm
     {
         return $schema
             ->components([
-                Tabs::make('Translations')
+                Tabs::make('Переклади')
                     ->tabs([
                         Tab::make('Українська')
                             ->schema([
-                                TextInput::make('name.uk')->label('Name')->required(),
-                                TextInput::make('description.uk')->label('Description'),
+                                TextInput::make('name.uk')->label('Назва')->required(),
+                                TextInput::make('description.uk')->label('Опис'),
                             ]),
                         Tab::make('Русский')
                             ->schema([
-                                TextInput::make('name.ru')->label('Name'),
-                                TextInput::make('description.ru')->label('Description'),
+                                TextInput::make('name.ru')->label('Назва'),
+                                TextInput::make('description.ru')->label('Опис'),
                             ]),
                     ])
                     ->columnSpanFull(),
                 TextInput::make('price_for_delivery')
+                    ->label('Вартість доставки')
                     ->numeric(),
             ]);
     }

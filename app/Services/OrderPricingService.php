@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\District;
+use App\Models\PromoCode;
 use App\Models\Product;
 use Illuminate\Support\Collection;
 
@@ -43,19 +44,21 @@ class OrderPricingService
         return $lineItems->sum(fn ($item) => $item['unit_price'] * $item['quantity']);
     }
 
-    public function calculate(array $validated): array
+    public function calculate(array $validated, ?PromoCode $promoCode = null): array
     {
         $lineItems = $this->buildLineItems($validated['items']);
         $deliveryFee = $this->deliveryFeeFor($validated);
         $cardFee = $this->cardFeeFor($validated);
         $itemsTotal = $this->itemsTotal($lineItems);
+        $discount = $promoCode ? $promoCode->discountFor($itemsTotal) : 0;
 
         return [
             'lineItems' => $lineItems,
             'deliveryFee' => $deliveryFee,
             'cardFee' => $cardFee,
             'itemsTotal' => $itemsTotal,
-            'total' => $itemsTotal  + $deliveryFee + $cardFee,
+            'discount' => $discount,
+            'total' => $itemsTotal - $discount + $deliveryFee + $cardFee,
         ];
     }
 

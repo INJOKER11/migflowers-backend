@@ -3,13 +3,17 @@ services:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
+      target: dev
     image: migflowers-backend-app
     container_name: migflowers-app
     restart: unless-stopped
     working_dir: /var/www/html
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./:/var/www/html
     environment:
+      - XDEBUG_MODE=debug
       - DB_CONNECTION=pgsql
       - DB_HOST=pgsql
       - DB_PORT=5432

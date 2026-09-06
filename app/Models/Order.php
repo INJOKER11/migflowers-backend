@@ -29,6 +29,9 @@ class Order extends Model
         'quantity',
         'price_at_purchase',
         'product_id',
+        'telegram_message_id',
+        'promo_code_id',
+        'discount_amount',
     ];
 
     protected $casts = [
@@ -36,6 +39,7 @@ class Order extends Model
         'total_amount' => 'decimal:2',
         'delivery_fee' => 'decimal:2',
         'card_fee' => 'decimal:2',
+        'discount_amount' => 'decimal:2',
     ];
 
     public function items(): HasMany
@@ -46,6 +50,11 @@ class Order extends Model
     public function district(): BelongsTo
     {
         return $this->belongsTo(District::class);
+    }
+
+    public function promoCode(): BelongsTo
+    {
+        return $this->belongsTo(PromoCode::class);
     }
 
     protected static function boot()

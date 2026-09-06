@@ -4,12 +4,16 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Services\OrderNotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 
 class MonobankWebhookController extends Controller
 {
+    public function __construct(
+        private OrderNotificationService $notification,
+    ) {}
 
     public function __invoke(Request $request)
     {
@@ -23,15 +27,22 @@ class MonobankWebhookController extends Controller
 
             return response()->noContent(Response::HTTP_OK);
         }
-        var_dump($payload);
-        if(($payload['status'] ?? null) === "success") {
-            $order->update([
-                'status' => 'paid',
-                'payment_reference' => $payload['invoiceId'],
-            ]);
-        } elseif (in_array($payload['status'] ?? null, ['failure', 'expired', 'reversed'], true)) {
-            $order->update(['status' => 'payment_failed']);
+
+        $newStatus = match ($payload['status'] ?? null) {
+            'success' => 'paid',
+            'failure', 'expired', 'reversed' => 'payment_failed',
+            default => null,
+        };
+
+        if($newStatus === null) {
+            return \response()->noContent(Response::HTTP_OK);
         }
+
+        $order->update([
+            'status' => $newStatus,
+            'payment_reference' => $newStatus === 'paid' ? $payload['invoiceId'] : $order->payment_reference,
+        ]);
+        $this->notification->notifyUpdatedOrder($order->fresh());
 
         return \response()->noContent(Response::HTTP_OK);
     }

@@ -1,4 +1,4 @@
-FROM php:8.3-fpm-alpine
+FROM php:8.3-fpm-alpine AS base
 
 RUN apk add --no-cache \
         postgresql-dev \
@@ -37,3 +37,19 @@ USER www
 EXPOSE 9000
 
 CMD ["php-fpm"]
+
+FROM base AS prod
+
+FROM base AS dev
+
+USER root
+
+RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS linux-headers \
+    && pecl install xdebug \
+    && docker-php-ext-enable xdebug \
+    && apk del .build-deps
+
+COPY docker/php/xdebug.ini /usr/local/etc/php/conf.d/xdebug-config.ini
+COPY docker/php/opcache-dev.ini /usr/local/etc/php/conf.d/opcache-dev.ini
+
+USER www

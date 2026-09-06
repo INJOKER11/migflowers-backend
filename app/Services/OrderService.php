@@ -10,16 +10,22 @@ class OrderService
 {
     public function __construct(
         private OrderPricingService $pricing,
+        private PromoCodeService $promoCodes,
     ){}
 
     public function create(array $validated): Order
     {
-        $calc = $this->pricing->calculate($validated);
+        $order = DB::transaction(function () use ($validated) {
+            $promoCode = filled($validated['promo_code'] ?? null)
+                ? $this->promoCodes->validate($validated['promo_code'], $validated['customer_email'])
+                : null;
 
-        $order = DB::transaction(function () use ($validated, $calc) {
+            $calc = $this->pricing->calculate($validated, $promoCode);
+
             $order = Order::create([
                 'customer_name' => $validated['customer_name'],
                 'total_amount' => $calc['total'],
+                'discount_amount' => $calc['discount'],
                 'customer_email' => $validated['customer_email'],
                 'customer_phone' => $validated['customer_phone'],
                 'delivery_address' => $validated['delivery_address'] ?? null,
@@ -36,10 +42,14 @@ class OrderService
 
             $this->attachItems($order, $calc['lineItems']);
 
+            if ($promoCode) {
+                $this->promoCodes->redeem($promoCode, $order);
+            }
+
             return $order;
         });
 
-        return $order->load('items.product', 'district');
+        return $order->load('items.product', 'district', 'promoCode');
     }
 
     private function attachItems(Order $order, Collection $lineItems): void
