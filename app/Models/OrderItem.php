@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class OrderItem extends Model
 {
-    protected $fillable = ['order_id', 'product_id', 'quantity', 'price_at_purchase'];
+    protected $fillable = ['order_id', 'product_id', 'size_id', 'product_color_id', 'quantity', 'price_at_purchase'];
 
     protected $casts = [
         'price_at_purchase' => 'decimal:2',
@@ -21,5 +21,15 @@ class OrderItem extends Model
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function size(): BelongsTo
+    {
+        return $this->belongsTo(Size::class);
+    }
+
+    public function color(): BelongsTo
+    {
+        return $this->belongsTo(ProductColor::class, 'product_color_id');
     }
 }

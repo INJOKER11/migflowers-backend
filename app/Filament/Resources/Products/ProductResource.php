@@ -22,6 +22,10 @@ class ProductResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'Product';
 
+    protected static ?string $modelLabel = 'товар';
+
+    protected static ?string $pluralModelLabel = 'товари';
+
     public static function form(Schema $schema): Schema
     {
         return ProductForm::configure($schema);
@@ -35,7 +39,8 @@ class ProductResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\SizesRelationManager::class,
+            RelationManagers\ColorsRelationManager::class,
         ];
     }
 

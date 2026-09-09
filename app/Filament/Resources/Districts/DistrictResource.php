@@ -22,6 +22,10 @@ class DistrictResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'District';
 
+    protected static ?string $modelLabel = 'район';
+
+    protected static ?string $pluralModelLabel = 'райони';
+
     public static function form(Schema $schema): Schema
     {
         return DistrictForm::configure($schema);

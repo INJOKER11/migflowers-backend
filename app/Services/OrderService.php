@@ -11,7 +11,7 @@ class OrderService
     public function __construct(
         private OrderPricingService $pricing,
         private PromoCodeService $promoCodes,
-    ){}
+    ) {}
 
     public function create(array $validated): Order
     {
@@ -49,7 +49,7 @@ class OrderService
             return $order;
         });
 
-        return $order->load('items.product', 'district', 'promoCode');
+        return $order->load('items.product', 'items.size', 'items.color', 'district', 'promoCode');
     }
 
     private function attachItems(Order $order, Collection $lineItems): void
@@ -57,6 +57,8 @@ class OrderService
         foreach ($lineItems as $item) {
             $order->items()->create([
                 'product_id' => $item['product_id'],
+                'size_id' => $item['size_id'] ?? null,
+                'product_color_id' => $item['color_id'] ?? null,
                 'quantity' => $item['quantity'],
                 'price_at_purchase' => $item['unit_price'],
             ]);

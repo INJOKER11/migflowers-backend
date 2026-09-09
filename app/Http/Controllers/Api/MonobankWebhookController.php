@@ -42,7 +42,7 @@ class MonobankWebhookController extends Controller
             'status' => $newStatus,
             'payment_reference' => $newStatus === 'paid' ? $payload['invoiceId'] : $order->payment_reference,
         ]);
-        $this->notification->notifyUpdatedOrder($order->fresh());
+        $this->notification->notifyUpdatedOrder($order->fresh(['items.product', 'items.size', 'items.color', 'district']));
 
         return \response()->noContent(Response::HTTP_OK);
     }

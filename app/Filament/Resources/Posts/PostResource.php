@@ -22,6 +22,10 @@ class PostResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'Post';
 
+    protected static ?string $modelLabel = 'стаття';
+
+    protected static ?string $pluralModelLabel = 'статті';
+
     public static function form(Schema $schema): Schema
     {
         return PostForm::configure($schema);
