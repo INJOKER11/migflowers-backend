@@ -18,6 +18,12 @@ class ItemsRelationManager extends RelationManager
 {
     protected static string $relationship = 'items';
 
+    protected static ?string $title = 'Товари';
+
+    protected static ?string $modelLabel = 'товар';
+
+    protected static ?string $pluralModelLabel = 'товари';
+
     public function form(Schema $schema): Schema
     {
         return $schema

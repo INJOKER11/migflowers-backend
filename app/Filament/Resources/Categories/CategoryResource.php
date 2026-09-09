@@ -22,6 +22,10 @@ class CategoryResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'Category';
 
+    protected static ?string $modelLabel = 'категорія';
+
+    protected static ?string $pluralModelLabel = 'категорії';
+
     public static function form(Schema $schema): Schema
     {
         return CategoryForm::configure($schema);

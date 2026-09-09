@@ -8,7 +8,7 @@ use Filament\Widgets\ChartWidget;
 
 class OrderStats extends ChartWidget
 {
-    protected ?string $heading = 'Order Stats';
+    protected ?string $heading = 'Статистика замовлень';
 
     protected function getData(): array
     {
@@ -21,17 +21,17 @@ class OrderStats extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Total Orders',
+                    'label' => 'Кількість замовлень',
                     'data' => $orders->pluck('count'),
                 ],
                 [
-                    'label' => 'Revenue',
+                    'label' => 'Дохід',
                     'data' => $orders->pluck('revenue'),
                     'yAxisID' => 'y1',
                     'borderColor' => 'transparent',
                 ],
             ],
-            'labels' => $orders->pluck('date')->map(fn ($date) => Carbon::parse($date)->format('M d')),
+            'labels' => $orders->pluck('date')->map(fn ($date) => Carbon::parse($date)->locale('uk')->translatedFormat('d M')),
         ];
     }
 

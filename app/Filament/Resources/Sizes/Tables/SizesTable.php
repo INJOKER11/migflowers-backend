@@ -1,20 +1,19 @@
 <?php
 
-namespace App\Filament\Resources\Products\Tables;
+namespace App\Filament\Resources\Sizes\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class ProductsTable
+class SizesTable
 {
     public static function configure(Table $table): Table
     {
         return $table
+            ->defaultSort('sort_order')
             ->columns([
                 TextColumn::make('id')
                     ->sortable()
@@ -22,26 +21,9 @@ class ProductsTable
                 TextColumn::make('name')
                     ->label('Назва')
                     ->searchable(),
-                TextColumn::make('slug')
-                    ->label('Слаг')
-                    ->searchable(),
-                TextColumn::make('price')
-                    ->label('Ціна')
-                    ->money('UAH')
+                TextColumn::make('sort_order')
+                    ->label('Порядок сортування')
                     ->sortable(),
-                TextColumn::make('discount_price')
-                    ->label('Ціна зі знижкою')
-                    ->money('UAH')
-                    ->sortable(),
-                IconColumn::make('is_active')
-                    ->label('Активний')
-                    ->boolean(),
-                TextColumn::make('categories.name')
-                    ->label('Категорії')
-                    ->badge()
-                    ->searchable(),
-                ImageColumn::make('image')
-                    ->label('Зображення'),
                 TextColumn::make('created_at')
                     ->label('Дата створення')
                     ->dateTime()

@@ -69,7 +69,20 @@ class OrderNotificationService
     public function itemLines(Order $order): string
     {
         return $order->items
-            ->map(fn ($item) => '• ' . e($item->product->getTranslation('name', 'uk')) . " × {$item->quantity}" . " * {$item->price_at_purchase}")
+            ->map(function ($item) {
+                $line = '• ' . e($item->product->getTranslation('name', 'uk'));
+
+                $options = array_filter([
+                    $item->size?->getTranslation('name', 'uk'),
+                    $item->color?->getTranslation('name', 'uk'),
+                ]);
+
+                if ($options) {
+                    $line .= ' (' . e(implode(', ', $options)) . ')';
+                }
+
+                return $line . " × {$item->quantity}" . " * {$item->price_at_purchase}";
+            })
             ->implode("\n");
     }
     public function deliveryLines(Order $order): string

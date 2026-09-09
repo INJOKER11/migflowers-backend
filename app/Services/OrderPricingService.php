@@ -3,8 +3,10 @@
 namespace App\Services;
 
 use App\Models\District;
-use App\Models\PromoCode;
 use App\Models\Product;
+use App\Models\ProductColor;
+use App\Models\ProductSize;
+use App\Models\PromoCode;
 use Illuminate\Support\Collection;
 
 class OrderPricingService
@@ -14,20 +16,34 @@ class OrderPricingService
     public function buildLineItems(array $items): Collection
     {
         return collect($items)->map(function ($item) {
-           $product = Product::findOrFail($item['product_id']);
+            $product = Product::findOrFail($item['product_id']);
 
-           return [
-             'product_id' => $product->id,
-             'product' => $product,
-             'quantity' => $item['quantity'],
-             'unit_price' => $product->discount_price ?? $product->price,
-           ];
+            $productSize = ! empty($item['size_id'])
+                ? ProductSize::where('product_id', $product->id)->where('size_id', $item['size_id'])->where('is_active', true)->first()
+                : null;
+
+            $productColor = ! empty($item['color_id'])
+                ? ProductColor::where('id', $item['color_id'])->where('product_id', $product->id)->where('is_active', true)->first()
+                : null;
+
+            $unitPrice = ($product->discount_price ?? $product->price)
+                + ($productSize->price_adjustment ?? 0)
+                + ($productColor->price_adjustment ?? 0);
+
+            return [
+                'product_id' => $product->id,
+                'product' => $product,
+                'size_id' => $item['size_id'] ?? null,
+                'color_id' => $item['color_id'] ?? null,
+                'quantity' => $item['quantity'],
+                'unit_price' => $unitPrice,
+            ];
         });
     }
 
     public function deliveryFeeFor(array $validated): int
     {
-        if($validated['delivery_method'] !== 'delivery') {
+        if ($validated['delivery_method'] !== 'delivery') {
             return 0;
         }
 
@@ -61,5 +77,4 @@ class OrderPricingService
             'total' => $itemsTotal - $discount + $deliveryFee + $cardFee,
         ];
     }
-
 }

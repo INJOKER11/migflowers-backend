@@ -9,10 +9,10 @@ use Spatie\Translatable\HasTranslations;
 
 class Product extends Model
 {
-
     use HasTranslations;
 
     public array $translatable = ['name', 'description', 'slug'];
+
     protected $fillable = [
         'name',
         'slug',
@@ -37,5 +37,15 @@ class Product extends Model
     public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function sizes(): HasMany
+    {
+        return $this->hasMany(ProductSize::class);
+    }
+
+    public function colors(): HasMany
+    {
+        return $this->hasMany(ProductColor::class);
     }
 }
