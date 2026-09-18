@@ -20,7 +20,7 @@ class VeraRsvpController extends Controller
         $token = (string) config('vera_rsvp.bot_token');
         $chat = (string) config('vera_rsvp.chat_id');
         $secret = (string) config('vera_rsvp.invitation_key');
-        if (! config('vera_rsvp.enabled') || $token === '' || $chat === '' || strlen($secret) < 32) {
+        if (! config('vera_rsvp.enabled') || $token === '' || $chat === '' || (config('vera_rsvp.require_invitation_key') && strlen($secret) < 32)) {
             return $this->error('not_configured', 503);
         }
 
@@ -32,7 +32,7 @@ class VeraRsvpController extends Controller
         }
         $limiter->hit($ipKey, 60);
 
-        if (! hash_equals($secret, (string) $request->header('X-Vera-Invitation'))) {
+        if (config('vera_rsvp.require_invitation_key') && ! hash_equals($secret, (string) $request->header('X-Vera-Invitation'))) {
             return $this->error('invalid_invitation', 403);
         }
 
