@@ -36,6 +36,7 @@ class StoreOrderRequest extends FormRequest
             'with_card' => 'nullable|boolean',
             'recipient_name' => 'nullable|string',
             'card_message' => 'nullable|string',
+            'comment' => 'nullable|string',
             'payment_method' => 'required|in:online,on_site,card',
             'promo_code' => 'nullable|string',
             'items' => 'required|array',

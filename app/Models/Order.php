@@ -21,6 +21,7 @@ class Order extends Model
         'card_fee',
         'recipient_name',
         'card_message',
+        'comment',
         'status',
         'total_amount',
         'payment_method',

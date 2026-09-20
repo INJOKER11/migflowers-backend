@@ -36,6 +36,7 @@ class OrderService
                 'card_fee' => $calc['cardFee'],
                 'recipient_name' => $validated['recipient_name'] ?? null,
                 'card_message' => $validated['card_message'] ?? null,
+                'comment' => $validated['comment'] ?? null,
                 'payment_method' => $validated['payment_method'],
                 'status' => 'pending',
             ]);
