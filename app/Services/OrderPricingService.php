@@ -13,6 +13,8 @@ class OrderPricingService
 {
     public const CARD_FEE = 30;
 
+    public const FREE_DELIVERY_THRESHOLD = 3000;
+
     public function buildLineItems(array $items): Collection
     {
         return collect($items)->map(function ($item) {
@@ -41,9 +43,13 @@ class OrderPricingService
         });
     }
 
-    public function deliveryFeeFor(array $validated): int
+    public function deliveryFeeFor(array $validated, int $itemsTotal): int
     {
         if ($validated['delivery_method'] !== 'delivery') {
+            return 0;
+        }
+
+        if ($itemsTotal >= self::FREE_DELIVERY_THRESHOLD) {
             return 0;
         }
 
@@ -63,9 +69,9 @@ class OrderPricingService
     public function calculate(array $validated, ?PromoCode $promoCode = null): array
     {
         $lineItems = $this->buildLineItems($validated['items']);
-        $deliveryFee = $this->deliveryFeeFor($validated);
-        $cardFee = $this->cardFeeFor($validated);
         $itemsTotal = $this->itemsTotal($lineItems);
+        $deliveryFee = $this->deliveryFeeFor($validated, $itemsTotal);
+        $cardFee = $this->cardFeeFor($validated);
         $discount = $promoCode ? $promoCode->discountFor($itemsTotal) : 0;
 
         return [

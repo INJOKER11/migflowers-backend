@@ -50,6 +50,7 @@ class OrderNotificationService
             . "<b>Товари:</b>\n{$this->itemLines($order)}\n\n"
             . ($order->card_fee > 0 ? "🎴 Листівка: +{$order->card_fee} ₴\n" : '')
             . ($order->card_message ? '💌 Текст листівки: ' . e($order->card_message) . "\n" : '')
+            . ($order->comment ? '📝 Коментар: ' . e($order->comment) . "\n" : '')
             . ($order->delivery_fee > 0 ? "🚚 Доставка: +{$order->delivery_fee} ₴\n" : '')
             . ($order->discount_amount > 0 ? "🏷 Знижка: -{$order->discount_amount} ₴\n" : '')
             . "💰 Сума: <b>{$order->total_amount} ₴</b>\n"

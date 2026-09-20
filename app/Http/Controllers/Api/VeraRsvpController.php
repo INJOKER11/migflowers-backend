@@ -42,6 +42,7 @@ class VeraRsvpController extends Controller
             'activities.*' => ['required', 'string', 'distinct', Rule::in([
                 'Посмотреть Инстаграм', 'Посмотреть «Беременна в 16»',
                 'Просто поговорить', 'Поиграть во что-то',
+                'Посмотреть YouTube', 'Посмотреть фильм', 'Посмотреть сериал', 'Выбрать вместе',
             ])],
             'idea' => ['nullable', 'string', 'max:180'],
             'date' => ['nullable', 'date_format:Y-m-d'],
@@ -147,7 +148,7 @@ class VeraRsvpController extends Controller
         $activities = $payload['activities'] ? implode(', ', $payload['activities']) : 'Решим вместе';
 
         // Plain text only: user input cannot inject Telegram HTML or Markdown.
-        return "🎀 Верочка согласилась на созвон!\n\n"
+        return "🍿 Верочка согласилась посмотреть вместе!\n\n"
             ."📅 {$date}\n🕐 {$time} ({$payload['timezone']})\n"
             ."✨ План: {$activities}\n"
             .($payload['idea'] !== '' ? "💬 Её пожелание: {$payload['idea']}\n" : '')

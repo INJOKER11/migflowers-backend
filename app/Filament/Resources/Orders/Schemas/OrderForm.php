@@ -52,6 +52,9 @@ class OrderForm
                 Textarea::make('card_message')
                     ->label('Текст листівки')
                     ->columnSpanFull(),
+                Textarea::make('comment')
+                    ->label('Коментар до замовлення')
+                    ->columnSpanFull(),
                 TextInput::make('card_fee')
                     ->label('Вартість листівки')
                     ->required()
