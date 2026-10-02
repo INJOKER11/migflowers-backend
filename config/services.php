@@ -40,5 +40,10 @@ return [
         'chat_id' => env('TELEGRAM_CHAT_ID'),
     ],
 
-    'monobank' => ['token' => env('MONOBANK_TOKEN')]
+    'liqpay' => [
+        'public_key' => env('LIQPAY_PUBLIC_KEY'),
+        'private_key' => env('LIQPAY_PRIVATE_KEY'),
+        // Test mode: LiqPay charges nothing and reports status "sandbox".
+        'sandbox' => env('LIQPAY_SANDBOX', false),
+    ],
 ];
