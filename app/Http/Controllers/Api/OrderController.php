@@ -9,7 +9,7 @@ use App\Http\Resources\OrderStatusResource;
 use App\Models\District;
 use App\Models\Order;
 use App\Models\Product;
-use App\Services\MonobankInvoiceService;
+use App\Services\LiqPayService;
 use App\Services\OrderNotificationService;
 use App\Services\OrderService;
 use App\Services\TelegramService;
@@ -20,7 +20,7 @@ class OrderController extends Controller
     public function __construct(
         private OrderService $orders,
         private OrderNotificationService $notifications,
-        private MonobankInvoiceService $monobank,
+        private LiqPayService $liqpay,
     ){}
     public function store(StoreOrderRequest $request)
     {
@@ -29,7 +29,7 @@ class OrderController extends Controller
         $this->notifications->notifyNewOrder($order);
 
         $paymentUrl = $order->payment_method === 'online'
-            ? $this->monobank->createFor($order)
+            ? $this->liqpay->createFor($order)
             : null;
 
         return (new OrderResource($order))

@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\DistrictController;
-use App\Http\Controllers\Api\MonobankWebhookController;
+use App\Http\Controllers\Api\LiqPayWebhookController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\ProductController;
@@ -27,7 +27,7 @@ Route::get('/sizes', [SizeController::class, 'index']);
 
 Route::post('/orders', [OrderController::class, 'store']);
 Route::get('/orders/status/{order_number}', [OrderController::class, 'getOrderStatus']);
-Route::post('/monobank/webhook', MonobankWebhookController::class)->name('orders.payment.webhook');
+Route::post('/liqpay/webhook', LiqPayWebhookController::class)->name('orders.payment.webhook');
 
 Route::get('/reviews', [ReviewController::class, 'index']);
 
