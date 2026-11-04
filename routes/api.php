@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\DistrictController;
+use App\Http\Controllers\Api\GoogleMerchantFeedController;
 use App\Http\Controllers\Api\LiqPayWebhookController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PostController;
@@ -35,6 +36,8 @@ Route::get('/posts', [PostController::class, 'index']);
 Route::get('/posts/{slug}', [PostController::class, 'show']);
 
 Route::get('/districts', [DistrictController::class, 'index']);
+
+Route::get('/feeds/google-merchant.xml', GoogleMerchantFeedController::class);
 
 Route::post('/questions', [QuestionController::class, 'store']);
 
