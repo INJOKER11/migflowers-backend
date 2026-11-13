@@ -21,6 +21,8 @@ class PostResource extends JsonResource
             'content' => $this->content,
             'image_url' => $this->image_url ? asset('storage/'.$this->image_url) : null,
             'subject' => $this->subject,
+            'seo_title' => $this->seoValue('seo_title'),
+            'meta_description' => $this->seoValue('meta_description'),
             'created_at' => $this->created_at,
         ];
     }
