@@ -22,6 +22,12 @@ echo "→ Deploying $(git rev-parse --short HEAD): $(git log -1 --pretty=%s)"
 $COMPOSE build app queue
 $COMPOSE up -d --remove-orphans
 
+# nginx keeps running across deploys, so it only sees a changed
+# docker/nginx/default.conf after a reload — and a reload also drops any
+# address it still holds for an app container `up` just replaced.
+$COMPOSE exec -T nginx nginx -t
+$COMPOSE exec -T nginx nginx -s reload
+
 # vendor/ is not in git and lives in the bind mount, so it is installed
 # in place, inside the container, with the container's PHP.
 $COMPOSE exec -T app composer install --no-dev --optimize-autoloader --no-interaction --no-progress
