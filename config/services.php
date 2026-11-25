@@ -35,6 +35,16 @@ return [
         ],
     ],
 
+    /* IndexNow: the key must match the file the storefront serves at
+       FRONTEND_URL/<key>.txt (public/<key>.txt in the frontend repo). It is
+       public by design, so a default is safe; pings are sent from production
+       only, never from local or CI runs. */
+    'indexnow' => [
+        'key' => env('INDEXNOW_KEY', 'a43171af94c0512e6f77ea0b8b9fef5b'),
+        'endpoint' => env('INDEXNOW_ENDPOINT', 'https://api.indexnow.org/indexnow'),
+        'enabled' => (bool) env('INDEXNOW_ENABLED', env('APP_ENV') === 'production'),
+    ],
+
     'telegram' => [
         'token' => env('TELEGRAM_BOT_TOKEN'),
         'chat_id' => env('TELEGRAM_CHAT_ID'),
