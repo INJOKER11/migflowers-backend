@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\IndexNow;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -47,5 +48,12 @@ class Product extends Model
     public function colors(): HasMany
     {
         return $this->hasMany(ProductColor::class);
+    }
+
+    /** Changed pages are announced to IndexNow; see App\Services\IndexNow. */
+    protected static function booted(): void
+    {
+        static::saved(fn (self $model) => IndexNow::notify($model));
+        static::deleted(fn (self $model) => IndexNow::notify($model));
     }
 }

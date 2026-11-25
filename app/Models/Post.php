@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\IndexNow;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
@@ -24,5 +25,12 @@ class Post extends Model
         $value = $this->getTranslation($key, app()->getLocale(), false);
 
         return filled($value) ? $value : null;
+    }
+
+    /** Changed pages are announced to IndexNow; see App\Services\IndexNow. */
+    protected static function booted(): void
+    {
+        static::saved(fn (self $model) => IndexNow::notify($model));
+        static::deleted(fn (self $model) => IndexNow::notify($model));
     }
 }
