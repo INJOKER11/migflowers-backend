@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\NoIndex;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -14,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->trustProxies(at: '*');
+        $middleware->append(NoIndex::class);
         $middleware->redirectGuestsTo(fn () => null);
         $middleware->api(append: [SetLocale::class]);
     })
